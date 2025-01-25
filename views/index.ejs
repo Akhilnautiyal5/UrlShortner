@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>URL Shortener</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body class="bg-gray-900 text-gray-100">
+		<!-- Main Container -->
+		<div class="container mx-auto px-6 py-10 md:py-16 max-w-3xl">
+			<div class="text-center mb-8">
+				<h1 class="text-4xl font-semibold text-white">URL Shortener</h1>
+				<p class="text-lg text-gray-400 mt-2">
+					Shorten and manage your URLs effortlessly.
+				</p>
+			</div>
+
+			<!-- Form to submit a new URL -->
+			<form
+				action="/url"
+				method="POST"
+				class="bg-gray-800 p-6 rounded-lg shadow-lg mb-10 space-y-6"
+			>
+				<div class="flex flex-col md:flex-row md:space-x-4 items-center">
+					<input
+						type="url"
+						name="url"
+						placeholder="Enter your URL"
+						required
+						class="w-full md:w-3/4 p-4 rounded-lg text-gray-900 border border-gray-600 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+					/>
+					<button
+						type="submit"
+						class="mt-4 md:mt-0 w-full md:w-1/4 p-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+					>
+						Shorten URL
+					</button>
+				</div>
+			</form>
+
+			<!-- Display shortened URLs -->
+			<div class="space-y-6">
+				<h2 class="text-2xl font-semibold text-white mb-6">
+					Your Shortened URLs
+				</h2>
+
+				<% urls.forEach(url => { %>
+				<div
+					class="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+				>
+					<div class="flex justify-between items-center">
+						<p class="text-lg font-medium text-gray-200">
+							Short ID:
+							<span class="font-semibold text-blue-400"
+								><%= url.shortId %></span
+							>
+						</p>
+						<p class="text-sm text-gray-500">
+							Original URL:
+							<a
+								href="<%= url.redirectURL %>"
+								target="_blank"
+								class="text-blue-400 hover:underline"
+								><%= url.redirectURL %></a
+							>
+						</p>
+					</div>
+
+					<div class="mt-4 flex justify-between space-x-4">
+						<div class="flex space-x-4">
+							<!-- Analytics Button -->
+							<a
+								href="/url/analytics/<%= url.shortId %>"
+								class="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition duration-300"
+							>
+								View Analytics
+							</a>
+							<!-- Redirect Button -->
+							<a
+								href="/<%= url.shortId %>"
+								target="_blank"
+								class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300"
+							>
+								Redirect
+							</a>
+						</div>
+						<div>
+							<!-- Delete Button -->
+							<button
+								onclick="deleteUrl('<%= url.shortId %>')"
+								class="bg-red-600 text-white py-2 px-6 rounded-lg hover:bg-red-700 transition duration-300"
+							>
+								Delete
+							</button>
+						</div>
+					</div>
+				</div>
+				<% }); %>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="mt-12 text-center text-sm text-gray-400">
+			<p>&copy; 2025 URL Shortener. All rights reserved.</p>
+		</footer>
+		<script src="script.js"></script>
+	</body>
+</html>
